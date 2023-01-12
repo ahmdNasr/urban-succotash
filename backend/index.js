@@ -6,7 +6,7 @@ const { getDB } = require("./getDB");
 const { ObjectId } = require("mongodb");
 const { deleteTodoImage } = require("./utils");
 
-const PORT = 45501;
+const PORT = process.env.PORT || 45501;
 const app = express();
 
 app.use(cors()); // cors policy middleware
