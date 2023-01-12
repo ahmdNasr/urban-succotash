@@ -1,0 +1,116 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.todo-item {
+  border: 1px solid black;
+  border-radius: 6px;
+  margin: 16px;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 8fr 1fr;
+  font-size: larger;
+  min-width: 60vw;
+  width: fit-content;
+  margin: 16px auto;
+}
+
+.todo-item-completed {
+  background-color: greenyellow;
+  color: grey;
+}
+.todo-item-completed .todo-item-inner {
+  text-decoration: line-through;
+}
+
+.todo-item-inner {
+  cursor: pointer;
+  padding: 16px;
+}
+
+.delete-todo-x {
+  cursor: pointer;
+  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: burlywood;
+  border-radius: 0px 6px 6px 0px;
+  grid-row: span 2;
+}
+
+.todo-more-link {
+  padding-bottom: 6px;
+}
+
+.todo-more-link a {
+  color: blue;
+  text-decoration: none;
+}
+
+.todo-item-completed a {
+  background-color: greenyellow;
+  color: grey;
+}
+
+.add-todo-form {
+  display: grid;
+  gap: 16px;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 16px;
+  background-color: darkkhaki;
+  border-radius: 0px 0px 6px 6px;
+}
+
+.add-todo-input {
+  font-size: larger;
+  border: none;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.add-todo-btn {
+  font-size: larger;
+  border: none;
+  padding: 16px;
+  border-radius: 6px;
+  background-color: blue;
+  color: whitesmoke;
+  font-weight: 900;
+}

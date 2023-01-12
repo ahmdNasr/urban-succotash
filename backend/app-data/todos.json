@@ -1,0 +1,23 @@
+[
+  {
+    "id": "84eb5e19b6f",
+    "text": "Todo App auf MongoDB umstellen -- MERN Stack",
+    "status": "open",
+    "image": "9455b42cbf427e4ea99b3e520f856e39",
+    "createdAt": 1673425607499
+  },
+  {
+    "id": "94605c579b7",
+    "text": "Talk about React...",
+    "status": "open",
+    "image": "f71219649f034bf4160d4e00f1cbcba8",
+    "createdAt": 1672831815600
+  },
+  {
+    "id": "xyz",
+    "text": "Haus bauen",
+    "status": "open",
+    "deadline": 1672822009019,
+    "createdAt": 1672735608775
+  }
+]

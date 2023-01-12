@@ -1,0 +1,23 @@
+[
+  {
+    "id": "abc",
+    "text": "Hausaufgaben von der Katze fressen lassen",
+    "status": "completed",
+    "deadline": 1672822009019,
+    "createdAt": 1672735608775
+  },
+  {
+    "id": "123",
+    "text": "Bootcamp Übung 2 machen (todo app)",
+    "status": "open",
+    "deadline": 1672822009019,
+    "createdAt": 1672735608775
+  },
+  {
+    "id": "xyz",
+    "text": "Haus bauen",
+    "status": "open",
+    "deadline": 1672822009019,
+    "createdAt": 1672735608775
+  }
+]
