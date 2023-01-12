@@ -2,11 +2,12 @@
 // 1. state update
 
 import { Link } from "react-router-dom";
+import { apiBaseUrl } from "../api";
 
 // 2. prop changes
 const Todos = (props) => {
   const updateTodoStatus = (todoId, newStatus) => {
-    fetch("http://localhost:45501/todos/update", {
+    fetch(apiBaseUrl + "/todos/update", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ todoId, status: newStatus }),
@@ -15,7 +16,7 @@ const Todos = (props) => {
       .then((newTodosArray) => props.setTodos(newTodosArray));
   };
   const deleteTodo = (todoId) => {
-    fetch("http://localhost:45501/todos/delete", {
+    fetch(apiBaseUrl + "/todos/delete", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ todoId }),

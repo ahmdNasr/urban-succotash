@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { apiBaseUrl } from "../api";
 
 const AddTodo = (props) => {
   const [todoText, setTodoText] = useState("");
@@ -31,7 +32,7 @@ const AddTodo = (props) => {
       return setErrorMessage("Please choose a todo image :)");
     }
 
-    fetch("http://localhost:45501/todos/new", {
+    fetch(apiBaseUrl + "/todos/new", {
       method: "POST",
       // headers: { "Content-Type": "application/json" }, // multipart/form-data
       body: formDataBody,

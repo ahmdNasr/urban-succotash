@@ -4,12 +4,13 @@ import AddTodo from "./components/AddTodo";
 import TodoDetailPage from "./components/TodoDetailPage";
 import Todos from "./components/Todos";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { apiBaseUrl } from "./api";
 
 function App() {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:45501/todos/all")
+    fetch(apiBaseUrl + "/todos/all")
       .then((res) => res.json())
       .then((todos) => setTodos(todos));
   }, []);

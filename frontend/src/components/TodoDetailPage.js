@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { apiBaseUrl } from "../api";
 
 const TodoDetailPage = () => {
   const { id: todoId } = useParams();
   const [todo, setTodo] = useState();
 
   useEffect(() => {
-    fetch(`http://localhost:45501/todos/${todoId}`)
+    fetch(`${apiBaseUrl}/todos/${todoId}`)
       .then((res) => res.json())
       .then((todoResult) => setTodo(todoResult));
   }, [todoId]);
@@ -19,7 +20,7 @@ const TodoDetailPage = () => {
         <p>Created At: {new Date(todo.createdAt).toLocaleString()}</p>
         <h2>Image</h2>
         <img
-          src={`http://localhost:45501/${todo.image}`}
+          src={`${apiBaseUrl}/${todo.image}`}
           width="600"
           alt="Todo Attachment"
         />
