@@ -1,0 +1,47 @@
+
+
+1. Controller Layer (Http, express, )
+2. Facade Layer (Data Validation)
+3. Service Layer (Use-Cases)
+4. Domain Layer / Entity Layer
+5. Persistance Layer / Data-Access Layer
+
+
+1. Controller Layer
+    Request-Handler (Request und Response)
+    Http-Stuff
+    Werte aus dem Http-Packet *(Header, Body, Query, Params, ...) nehmen und an Facade weiterleiten!
+    /users/6cf7237aab63783d4738ddad/posts
+2. Facade Layer 
+    Data "Format" Validation -> "Haben die Daten das richtige Format"
+    userId: 6cf7237aab63783d4738ddad  (24hex character) 
+3. Service Layer
+    "Business Logic"
+    "Use Cases" (die Sprache des Users!!!)
+    
+    -> "Machen diese Daten von der Facade auch Sinn ? zb Exisitiert der User überhaupt"
+    
+    UsersDAO.findById("6cf7237aab63783d4738ddad")
+    .then(foundUser => {
+        if(!foundUser) {
+            throw new Error(`User with id ${userId} not found`)
+        }
+
+        // .... work with user
+    })
+
+4. Domain-Model Layer
+    "Was ist ein User überhaupt???"
+    "Welche Felder hat ein User, welche Werte dürfen diese Felder annehmen??"
+
+5. DB-Access Layer
+    Zugriffsfunktionen pro Domain-Entity
+    
+    UserDAO.findById(userId)
+           .findByEmail(email)
+           .findByUsername(username)
+           .findByPostedOn(postId)
+           .findAll()
+           .insertOne(userObj)
+           ...
+    DAO --> "Database Access Object"
