@@ -2,8 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const multer = require("multer");
 const cors = require("cors");
-const { deleteTodoImage } = require("./utils/deleteTodoImage");
-const { TodoService } = require("./use-cases");
+const { TodoService, UserService } = require("./use-cases");
 
 const PORT = process.env.PORT || 45501;
 const app = express();
@@ -13,13 +12,27 @@ app.use(morgan("dev")); // logging middleware
 app.use(express.json()); // body parser middleware -- NUR json!
 app.use(express.static("app-data/todo-images"));
 
+app.post("/users/register", (req, res) => {
+  const userInfo = {
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+  };
+  UserService.registerUser(userInfo)
+    .then((registerdUser) => res.json(registerdUser))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ err: err.message });
+    });
+});
+
 // alle todos fetchen
 app.get("/todos/all", (_, res) => {
   TodoService.getAllTodos()
     .then((todos) => res.json(todos))
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ err });
+      res.status(500).json({ err: err.message });
     });
 });
 
@@ -30,7 +43,7 @@ app.get("/todos/:id", (req, res) => {
     .then((todo) => res.json(todo || {}))
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ err });
+      res.status(500).json({ err: err.message });
     });
 });
 
@@ -46,7 +59,7 @@ app.post("/todos/new", uploadMiddleware, (req, res) => {
     .then((addedTodo) => res.json(addedTodo))
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ err });
+      res.status(500).json({ err: err.message });
     });
 });
 
@@ -59,7 +72,7 @@ app.put("/todos/update", (req, res) => {
     .then((newTodosArray) => res.json(newTodosArray))
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ err });
+      res.status(500).json({ err: err.message });
     });
 });
 
@@ -70,7 +83,7 @@ app.delete("/todos/delete", (req, res) => {
     .then((newTodosArray) => res.json(newTodosArray))
     .catch((err) => {
       console.log(err);
-      res.status(500).json({ err });
+      res.status(500).json({ err: err.message });
     });
 });
 
