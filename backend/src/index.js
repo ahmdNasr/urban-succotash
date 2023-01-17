@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const multer = require("multer");
 const cors = require("cors");
 const { TodoService, UserService } = require("./use-cases");
-const { doBasicAuth } = require("./middleware/doBasicAuth");
+const { doAuth } = require("./middleware/doAuth");
 
 const PORT = process.env.PORT || 45501;
 const app = express();
@@ -12,6 +12,19 @@ app.use(cors()); // cors policy middleware
 app.use(morgan("dev")); // logging middleware
 app.use(express.json()); // body parser middleware -- NUR json!
 app.use(express.static("app-data/todo-images"));
+
+app.post("/users/login", (req, res) => {
+  const loginCredentials = {
+    email: req.body.email,
+    password: req.body.password,
+  };
+  UserService.loginUser(loginCredentials)
+    .then((loginResult) => res.json(loginResult))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ err: err.message });
+    });
+});
 
 app.post("/users/register", (req, res) => {
   const userInfo = {
@@ -28,7 +41,7 @@ app.post("/users/register", (req, res) => {
 });
 
 // alle todos fetchen
-app.get("/todos/all", doBasicAuth, (_, res) => {
+app.get("/todos/all", doAuth, (_, res) => {
   TodoService.getAllTodos()
     .then((todos) => res.json(todos))
     .catch((err) => {
@@ -38,7 +51,7 @@ app.get("/todos/all", doBasicAuth, (_, res) => {
 });
 
 // einzelnes todo per id fetchen
-app.get("/todos/:id", doBasicAuth, (req, res) => {
+app.get("/todos/:id", doAuth, (req, res) => {
   const todoId = req.params.id;
   TodoService.getTodo({ todoId })
     .then((todo) => res.json(todo || {}))
@@ -52,7 +65,7 @@ const upload = multer({ dest: "./app-data/todo-images" });
 const uploadMiddleware = upload.single("todoImage");
 
 // todo anlegen
-app.post("/todos/new", doBasicAuth, uploadMiddleware, (req, res) => {
+app.post("/todos/new", doAuth, uploadMiddleware, (req, res) => {
   TodoService.addTodo({
     text: req.body.text,
     image: req.file.filename,
@@ -65,7 +78,7 @@ app.post("/todos/new", doBasicAuth, uploadMiddleware, (req, res) => {
 });
 
 // todo bearbeiten (zb status ändern)
-app.put("/todos/update", doBasicAuth, (req, res) => {
+app.put("/todos/update", doAuth, (req, res) => {
   const todoId = req.body.todoId; // welche todo soll ge-updated werden?
   const newStatus = req.body.status;
 
@@ -78,7 +91,7 @@ app.put("/todos/update", doBasicAuth, (req, res) => {
 });
 
 // todo löschen
-app.delete("/todos/delete", doBasicAuth, (req, res) => {
+app.delete("/todos/delete", doAuth, (req, res) => {
   const todoId = req.body.todoId; // welche todo soll gelöscht werden ?
   TodoService.removeTodo({ todoId })
     .then((newTodosArray) => res.json(newTodosArray))

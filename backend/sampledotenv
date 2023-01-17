@@ -1,3 +1,6 @@
 # Connection string to mongodb with username and password
-MONGO_URL=""
-MONGO_DB_NAME=""
+MONGO_URL="mongodb://localhost:27017"
+MONGO_DB_NAME="db"
+
+# JWT Token verification secret
+JWT_SECRET="secret123!"
