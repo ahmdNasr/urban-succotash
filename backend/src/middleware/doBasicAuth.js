@@ -2,7 +2,7 @@ const { UsersDAO } = require("../db-access");
 const { decodeBase64 } = require("../utils/base64");
 const { createHash } = require("../utils/createHash");
 
-function doBasicAuth(req, res, next) {
+async function doBasicAuth(req, res, next) {
   const AuthHeader = req.headers.authorization; // "Basic <credentials>";
   if (!AuthHeader) {
     return res.status(401).json({ err: "Auth required" });
@@ -20,20 +20,19 @@ function doBasicAuth(req, res, next) {
     return res.status(401).json({ err: "Invalid credentials" });
   }
 
-  UsersDAO.findByEmail(email).then((foundUser) => {
-    if (!foundUser) {
-      return res.status(401).json({ err: "User with this email not found" });
-    }
+  const foundUser = await UsersDAO.findByEmail(email);
+  if (!foundUser) {
+    return res.status(401).json({ err: "User with this email not found" });
+  }
 
-    const passwordHash = createHash(password);
-    const isValidPassword = foundUser.passwordHash === passwordHash;
-    if (!isValidPassword) {
-      return res.status(401).json({ err: "Password incorrect" });
-    }
-    // VALID USER + PASSWORD combo
-    req.authenticatedUserId = foundUser._id.toString();
-    next();
-  });
+  const passwordHash = createHash(password);
+  const isValidPassword = foundUser.passwordHash === passwordHash;
+  if (!isValidPassword) {
+    return res.status(401).json({ err: "Password incorrect" });
+  }
+  // VALID USER + PASSWORD combo
+  req.authenticatedUserId = foundUser._id.toString();
+  next();
 }
 
 module.exports = {

@@ -9,7 +9,9 @@ function deleteFile(path) {
   });
 }
 
-function deleteTodoImage(todoImage) {
+// funktioniert auch OHNE dem async, aber mit async lässt sich schneller herauslesen,
+// dass diese funktion eine Promise returned ;)
+async function deleteTodoImage(todoImage) {
   const path = __dirname + "/app-data/todo-images/" + todoImage;
   return deleteFile(path);
 }

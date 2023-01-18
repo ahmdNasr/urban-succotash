@@ -1,17 +1,17 @@
 const { getDB } = require("./getDB");
 
-function findByEmail(email) {
-  return getDB().then((db) => db.collection("users").findOne({ email }));
+async function findByEmail(email) {
+  const db = await getDB();
+  const user = await db.collection("users").findOne({ email });
+  return user;
 }
 
-function insertOne(user) {
-  return getDB()
-    .then((db) => db.collection("users").insertOne(user))
-    .then((insertResult) => {
-      return insertResult.acknowledged
-        ? { _id: insertResult.insertedId, ...user }
-        : null;
-    });
+async function insertOne(user) {
+  const db = await getDB();
+  const insertResult = await db.collection("users").insertOne(user);
+  return insertResult.acknowledged
+    ? { _id: insertResult.insertedId, ...user }
+    : null;
 }
 
 module.exports = {

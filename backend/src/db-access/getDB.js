@@ -9,21 +9,30 @@ let dbReference = null; // singleton pattern
 
 // falsy values = null, undefined, "", 0, NaN, false
 // truthy values = 1, "string", {}, [], { key: "value" }, true
-function getDB() {
+async function getDB() {
   if (dbReference) {
-    return Promise.resolve(dbReference);
+    return dbReference;
   } else {
     console.log("Connecting to database for first time...", url);
     const client = new MongoClient(url);
-    return client
-      .connect()
-      .then((connectedClient) => connectedClient.db(dbName))
-      .then((db) => {
-        dbReference = db; // DATENBANK-REFERENZ ZWISCHENSPEICHERN!!!!!!!!!!
-        return dbReference;
-      });
+    const connectedClient = await client.connect();
+    const db = connectedClient.db(dbName);
+    dbReference = db; // DATENBANK-REFERENZ ZWISCHENSPEICHERN!!!!!!!!!!
+    return db;
   }
 }
+
+// eleganter gelöst, weil !dbRefrence geprüft wird, und die funktion wird knackiger ;)
+// async function getDB() {
+//   if (!dbReference) {
+//     console.log("Connecting to database for first time...", url);
+//     const client = new MongoClient(url);
+//     const connectedClient = await client.connect();
+//     const db = connectedClient.db(dbName);
+//     dbReference = db; // DATENBANK-REFERENZ ZWISCHENSPEICHERN!!!!!!!!!!
+//   }
+//   return dbReference;
+// }
 
 module.exports = {
   getDB,

@@ -13,17 +13,18 @@ app.use(morgan("dev")); // logging middleware
 app.use(express.json()); // body parser middleware -- NUR json!
 app.use(express.static("app-data/todo-images"));
 
-app.post("/users/login", (req, res) => {
-  const loginCredentials = {
-    email: req.body.email,
-    password: req.body.password,
-  };
-  UserService.loginUser(loginCredentials)
-    .then((loginResult) => res.json(loginResult))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ err: err.message });
-    });
+app.post("/users/login", async (req, res) => {
+  try {
+    const loginCredentials = {
+      email: req.body.email,
+      password: req.body.password,
+    };
+    const loginResult = await UserService.loginUser(loginCredentials);
+    res.json(loginResult);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ err: err.message });
+  }
 });
 
 app.post("/users/register", (req, res) => {

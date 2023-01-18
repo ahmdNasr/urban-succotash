@@ -1,26 +1,24 @@
 const { getDB } = require("./getDB");
 
-function findAll() {
-  return getDB().then((db) =>
-    db.collection("todos").find().sort({ createdAt: -1 }).toArray()
-  );
+async function findAll() {
+  const db = await getDB();
+  return db.collection("todos").find().sort({ createdAt: -1 }).toArray();
 }
-function findById(todoId) {
-  return getDB().then((db) =>
-    db.collection("todos").findOne({ _id: ObjectId(todoId) })
-  );
+async function findById(todoId) {
+  const db = await getDB();
+  const todo = await db.collection("todos").findOne({ _id: ObjectId(todoId) });
+  return todo;
 }
-function insertOne(todoInfo) {
-  return getDB()
-    .then((db) => db.collection("todos").insertOne(todoInfo))
-    .then((insertResult) => {
-      return insertResult.acknowledged
-        ? { _id: insertResult.insertedId, ...todoInfo }
-        : null;
-    });
+async function insertOne(todoInfo) {
+  const db = await getDB();
+  const insertResult = await db.collection("todos").insertOne(todoInfo);
+  return insertResult.acknowledged
+    ? { _id: insertResult.insertedId, ...todoInfo }
+    : null;
 }
-function updateStatus(todoId, newStatus) {
-  return getDB().then((db) =>
+async function updateStatus(todoId, newStatus) {
+  const db = await getDB();
+  return (
     db
       .collection("todos")
       // findOneAndUpdate ... options welches doc returnen ? "before" / "after"
@@ -30,16 +28,13 @@ function updateStatus(todoId, newStatus) {
       )
   );
 }
-function deleteOne(todoId) {
-  return getDB().then((db) =>
-    db
-      .collection("todos")
-      .findOneAndDelete({ _id: ObjectId(todoId) })
-      .then((result) => {
-        const deletedTodo = result.value;
-        return deletedTodo;
-      })
-  );
+async function deleteOne(todoId) {
+  const db = await getDB();
+  const result = await db
+    .collection("todos")
+    .findOneAndDelete({ _id: ObjectId(todoId) });
+  const deletedTodo = result.value;
+  return deletedTodo;
 }
 
 module.exports = {
